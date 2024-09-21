@@ -419,8 +419,8 @@ const Toast = (props: ToastProps) => {
               onClick={(event) => {
                 // We need to check twice because typescript
                 if (!isAction(toast.action)) return;
-                if (event.defaultPrevented) return;
                 toast.action.onClick?.(event);
+                if (event.defaultPrevented) return;
                 deleteToast();
               }}
               className={cn(classNames?.actionButton, toast?.classNames?.actionButton)}
@@ -458,8 +458,10 @@ function useSonner() {
         }
 
         const existingToastIndex = currentToasts.findIndex((t) => t.id === toast.id);
-        if (existingToastIndex !== -1) {
+        const toastExists = existingToastIndex !== -1;
+        if (toastExists) {
           const updatedToasts = [...currentToasts];
+          // merge the existing toast with the updated toast
           updatedToasts[existingToastIndex] = { ...updatedToasts[existingToastIndex], ...toast };
           return updatedToasts;
         } else {
@@ -467,7 +469,7 @@ function useSonner() {
         }
       });
     });
-  }, []);
+  });
 
   return {
     toasts: activeToasts,
