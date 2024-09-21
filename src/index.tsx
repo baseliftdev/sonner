@@ -451,7 +451,6 @@ function useSonner() {
   const [activeToasts, setActiveToasts] = React.useState<ToastT[]>([]);
 
   React.useEffect(() => {
-    console.log('re-subscribing');
     return ToastState.subscribe((toast) => {
       setActiveToasts((currentToasts) => {
         if ('dismiss' in toast && toast.dismiss) {
